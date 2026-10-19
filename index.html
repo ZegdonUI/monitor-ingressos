@@ -584,5 +584,21 @@ footer .wrap { display: grid; gap: 10px; }
   </div>
 </footer>
 
+<script>
+  // Sempre abre no começo da página: o navegador não volta para a posição anterior
+  // nem para um "#precos" que ficou no endereço.
+  if ("scrollRestoration" in history) history.scrollRestoration = "manual";
+  if (location.hash) history.replaceState(null, "", location.pathname + location.search);
+  window.scrollTo(0, 0);
+  // Links do menu rolam até a seção sem colocar "#..." no endereço
+  document.querySelectorAll('a[href^="#"]').forEach((a) => {
+    a.addEventListener("click", (e) => {
+      const alvo = document.querySelector(a.getAttribute("href"));
+      if (!alvo) return;
+      e.preventDefault();
+      alvo.scrollIntoView({ behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
+    });
+  });
+</script>
 </body>
 </html>
